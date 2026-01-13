@@ -30,6 +30,8 @@ RUN mkdir -p /app/staticfiles
 # Collect static files
 RUN uv run python manage.py collectstatic --noinput
 
+RUN uv run manage.py migrate --noinput
+
 # Expose port 8000
 EXPOSE 8000
 

@@ -22,9 +22,6 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
-    environment:
-      - DEBUG=1
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/live_event_db
     depends_on:
       db:
         condition: service_healthy

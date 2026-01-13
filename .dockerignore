@@ -23,7 +23,6 @@ env/
 
 # Git
 .git/
-.gitignore
 
 # Database
 *.db
@@ -33,18 +32,8 @@ env/
 .env
 .env.local
 
-# Docker
-Dockerfile
-dockerfile
-docker-compose.yml
-.dockerignore
-
 # Static files (will be collected during build)
 staticfiles/
-
-# Documentation
-README.md
-*.md
 
 # Tests
 .pytest_cache/

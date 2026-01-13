@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Git
+.git/
+.gitignore
+
+# Database
+*.db
+*.sqlite3
+
+# Environment
+.env
+.env.local
+
+# Docker
+Dockerfile
+dockerfile
+docker-compose.yml
+.dockerignore
+
+# Static files (will be collected during build)
+staticfiles/
+
+# Documentation
+README.md
+*.md
+
+# Tests
+.pytest_cache/
+htmlcov/
+.coverage

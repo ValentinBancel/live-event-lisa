@@ -9,15 +9,17 @@ ENV PYTHONUNBUFFERED=1 \
 # Create and set the work directory
 WORKDIR /app
 
+# Create a non-root user for security
+RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
+
 # Copy dependency list and install dependencies
-COPY uv.lock /app/
-COPY pyproject.toml /app/
+COPY --chown=appuser:appuser uv.lock pyproject.toml /app/
+
+# Switch to non-root user for dependency installation
+USER appuser
 
 # Install dependencies using uv
 RUN uv sync --frozen --no-cache
-
-# Create a non-root user for security
-RUN useradd -m -u 1000 appuser
 
 # Copy the entire project
 COPY --chown=appuser:appuser . /app/
@@ -27,12 +29,6 @@ RUN mkdir -p /app/staticfiles
 
 # Collect static files
 RUN uv run python manage.py collectstatic --noinput
-
-# Change ownership of all files to appuser
-RUN chown -R appuser:appuser /app
-
-# Switch to non-root user
-USER appuser
 
 # Expose port 8000
 EXPOSE 8000

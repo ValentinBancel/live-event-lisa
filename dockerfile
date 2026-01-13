@@ -16,8 +16,11 @@ COPY pyproject.toml /app/
 # Install dependencies using uv
 RUN uv sync --frozen --no-cache
 
+# Create a non-root user for security
+RUN useradd -m -u 1000 appuser
+
 # Copy the entire project
-COPY . /app/
+COPY --chown=appuser:appuser . /app/
 
 # Create directory for static files
 RUN mkdir -p /app/staticfiles
@@ -25,8 +28,10 @@ RUN mkdir -p /app/staticfiles
 # Collect static files
 RUN uv run python manage.py collectstatic --noinput
 
-# Create a non-root user for security
-RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
+# Change ownership of all files to appuser
+RUN chown -R appuser:appuser /app
+
+# Switch to non-root user
 USER appuser
 
 # Expose port 8000

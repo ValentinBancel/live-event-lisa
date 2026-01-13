@@ -37,4 +37,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD uv run python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/docs/').read()" || exit 1
 
 # Start gunicorn (migrations must be run separately)
-CMD uv run gunicorn mspr2_api.wsgi:application --bind 0.0.0.0:${PORT} --workers 4 --timeout 120 --access-logfile - --error-logfile -
+CMD ["sh", "-c", "uv run gunicorn mspr2_api.wsgi:application --bind 0.0.0.0:${PORT} --workers 4 --timeout 120 --access-logfile - --error-logfile -"]

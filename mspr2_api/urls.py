@@ -1,8 +1,25 @@
 from django.contrib import admin
 from django.urls import path, include, re_path
+from django.http import JsonResponse
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+
+def api_root(request):
+    return JsonResponse({
+        'message': 'Gestion de Concerts API',
+        'version': 'v1',
+        'endpoints': {
+            'documentation': '/swagger/',
+            'admin': '/backoffice/',
+            'users': '/api/users/',
+            'roles': '/api/roles/',
+            'categories': '/api/categories/',
+            'lieux': '/api/lieux/',
+            'organisateurs': '/api/organisateurs/',
+            'concerts': '/api/concerts/',
+        }
+    })
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -15,6 +32,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path('', api_root, name='api-root'),
     path('backoffice/', admin.site.urls),
     path('api/users/', include('users.urls')),
     path('api/roles/', include('roles.urls')),

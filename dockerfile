@@ -33,9 +33,9 @@ RUN uv run python manage.py collectstatic --noinput
 # Expose port 8000
 EXPOSE 8000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD uv run python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/swagger/').read()" || exit 1
+# Health check - use Python's urllib for lightweight healthcheck
+HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/', timeout=2)" || exit 1
 
-# Start gunicorn (migrations must be run separately)
-CMD ["sh", "-c", "uv run gunicorn mspr2_api.wsgi:application --bind 0.0.0.0:${PORT} --workers 4 --timeout 120 --access-logfile - --error-logfile -"]
+# Start application - run migrations then start gunicorn
+CMD ["sh", "-c", "uv run python manage.py migrate --noinput && uv run gunicorn mspr2_api.wsgi:application --bind 0.0.0.0:${PORT} --workers 4 --timeout 120 --access-logfile - --error-logfile -"]
